@@ -33,7 +33,7 @@ playButton.addEventListener('click', () => {
     if (!isPlaying) {
         if (!isStarted) {
             isStarted = true;
-            run_Video(`https://raw.githubusercontent.com/Itsukaichi-3project/Video_viewer-base/main/videos/${videoPath}`);
+            run_Video(`https://raw.githubusercontent.com/Itsukaichi-3project/Video_viewer-bace/main/videos/${videoPath}`);
         } else {
             videoElm.play();
             playButton.textContent = '■動画を停止';
