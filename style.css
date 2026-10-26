@@ -1,0 +1,71 @@
+#main-content{
+  background-color: #000000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+  z-index: 0;
+}
+#play-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 40px;
+  font-size: 24px;
+  color: #fff;
+  background: linear-gradient(to top right, #6366f1,#a855f7);
+  box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.4);;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  height: 128px;
+  width: calc(128px * 6);
+  transition:
+  transform 0.3s ease,
+  box-shadow 0.3s ease,
+}
+#play-button:hover {
+    scale: 1.05;
+
+}
+#play-button:active {
+    scale:0.95;
+}
+.wave-container {
+  display: flex;
+  gap:10px;
+  justify-content: center;
+  align-items: center;
+  position: absolute;  /* ★Flexboxの配置計算から完全に外す */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* ★自身の中心を基準点に合わせる */
+  z-index: -1;
+}
+.wave-bar {
+  width: 15px;
+  height: 100px;
+  background-color: #6366f1; /* インディゴカラー（お好みで変更可） */
+  border-radius: 9999px;
+  animation: music-wave 1.2s ease-in-out infinite alternate;
+  flex-shrink: 0;
+}
+/* バーごとにアニメーションのタイミングをずらして波感を出す */
+
+/* 波のアニメーション定義 */
+@keyframes music-wave {
+  0% {
+    height: 150px;
+  }
+  50% {
+    height: var(--peak-height, 350px);
+  }
+  100% {
+    height: 200px;
+  }
+}
+.hidden {
+  display: none !important;
+}

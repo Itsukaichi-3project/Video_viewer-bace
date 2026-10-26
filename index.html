@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title></title>
+        <style>
+            /* --- 1. 全体設定と非表示制御 --- */
+            body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            }
+
+            /* メインコンテンツは完了まで非表示（スムーズな表示のため opacity 制御） */
+            #main-content {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease;
+            }
+
+            /* メインコンテンツ準備完了時に付与するクラス */
+            #main-content.loaded {
+            opacity: 1;
+            visibility: visible;
+            }
+
+            /* --- 2. ローディング画面のスタイル --- */
+            #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+            }
+
+            #loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            }
+
+            /* スピナーアニメーション */
+            .spinner {
+            width: 48px;
+            height: 48px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+            }
+
+            .loading-text {
+            margin-top: 16px;
+            color: #555;
+            font-size: 14px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="loading-screen">
+            <div class="spinner"></div>
+            <div class="loading-text">読み込み中...</div>
+        </div>
+        <div id="main-content">
+            <div class="wave-container hidden" id="waveContainer">
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+                <span class="wave-bar"></span>
+            </div>
+            <div id="play-button">▶音楽を再生</div>
+        </div>
+        <script>
+            (async function() {
+            const user = 'Itsukaichi-3project';
+            const repo = 'Video_viewer-base';
+            const branch = 'main';
+
+            // 1. CSS/JSを動的に生成してPromise化する関数
+            function loadCSS(url) {
+                return new Promise((resolve, reject) => {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = url;
+                link.onload = () => resolve();
+                link.onerror = () => reject(new Error(`CSS読み込み失敗: ${url}`));
+                document.head.appendChild(link);
+                });
+            }
+
+            function loadJS(url) {
+                return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = url;
+                script.onload = () => resolve();
+                script.onerror = () => reject(new Error(`JS読み込み失敗: ${url}`));
+                document.head.appendChild(script);
+                });
+            }
+
+            try {
+                // 2. version.json を取得（キャッシュを回避するために no-cache を指定）
+                // ※ raw.githack.com を使って直読み、または GitHub Pages 等のURLを指定
+                const versionUrl = `https://raw.githack.com/${user}/${repo}/${branch}/version.json?raw=true`;
+                const res = await fetch(versionUrl, { cache: 'no-cache' });
+                
+                if (!res.ok) throw new Error('version.json の取得に失敗しました');
+                const data = await res.json();
+                
+                // 最新コミットハッシュ（更新がない場合は前と同じ値＝キャッシュが効く）
+                const versionParam = '?v=' + data.v;
+
+                // 3. 最新バージョンパラメータを付与したURLを設定
+                const cssUrl = `https://cdn.statically.io/gh/${user}/${repo}@${branch}/style.css${versionParam}`;
+                const jsUrl  = `https://cdn.statically.io/gh/${user}/${repo}@${branch}/script.js${versionParam}`;
+
+                // 4. CSSとJSを並列でロード
+                await Promise.all([
+                loadCSS(cssUrl),
+                loadJS(jsUrl)
+                ]);
+
+                // 5. 読み込み完了後、ローディング画面を解除
+                const loadingScreen = document.getElementById('loading-screen');
+                const mainContent = document.getElementById('main-content');
+
+                loadingScreen.classList.add('hidden');
+                mainContent.classList.add('loaded');
+
+            } catch (error) {
+                console.error(error);
+                
+                // フォールバック処理（バージョン指定なしで読み込みを試みる）
+                const cssUrl = `https://cdn.jsdelivr.net/gh/${user}/${repo}@${branch}/style.css`;
+                const jsUrl  = `https://cdn.jsdelivr.net/gh/${user}/${repo}@${branch}/script.js`;
+                
+                Promise.all([loadCSS(cssUrl), loadJS(jsUrl)]).then(() => {
+                document.getElementById('loading-screen').classList.add('hidden');
+                document.getElementById('main-content').classList.add('loaded');
+                }).catch(() => {
+                const loadingText = document.querySelector('.loading-text');
+                if (loadingText) loadingText.textContent = 'ページの読み込みに失敗しました。';
+                });
+            }
+            })();
+        </script>
+    </body>
+</html>
