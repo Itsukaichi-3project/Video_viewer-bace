@@ -35,8 +35,8 @@
     scale:0.95;
 }
 #play-video {
-  width:60%;
-  height:60%;
+  width: calc(64px * 12);
+  height:auto;
 }
 .wave-container {
   display: flex;
