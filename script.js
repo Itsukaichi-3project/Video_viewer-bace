@@ -75,7 +75,7 @@ bars.forEach((bar, index) => {
 const distanceFromCenter = Math.abs(index - centerIndex);
 
 // 中央が一番高く（例: 350px）、外側に行くほど低くする（最小でも 120px は残す）
-const maxHeight = Math.max(120, 380 - (distanceFromCenter * 50));
+const maxHeight = Math.max(700, 820 - (distanceFromCenter * 50));
 
 // 遅延時間も中央から外側に向けて順番にずらす
 const delay = distanceFromCenter * 0.1;
