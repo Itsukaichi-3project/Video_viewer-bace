@@ -62,13 +62,13 @@
 /* 波のアニメーション定義 */
 @keyframes music-wave {
   0% {
-    height: 300px;
+    height: 500px;
   }
   50% {
-    height: var(--peak-height, 7000px);
+    height: var(--peak-height, 700px);
   }
   100% {
-    height: 400px;
+    height: 600px;
   }
 }
 .hidden {
