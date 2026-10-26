@@ -3,48 +3,57 @@ const playButton = document.getElementById('play-button');
 let isPlaying = false;
 let isStarted = false;
 const urlParams = new URLSearchParams(window.location.search);
-const musicPath = urlParams.get('path');
+const videoPath = urlParams.get('path');
 const waveContainer =  document.getElementById('waveContainer');
-function run_Music(path){
-    audio = new Audio(path);
-    audio.play();
-    playButton.textContent = '■音声を停止';
+const videoElm = document.getElementById("play-video")
+function run_Video(path){
+    videoElm.src=path
+    videoElm.load()
+    playButton.textContent = "■動画を停止"
     waveContainer.classList.remove('hidden');
+    videoElm.classList.remove("hidden")
+    videoElm.play()
     isPlaying = true;
-    audio.addEventListener('ended', () => {
+    videoElm.addEventListener('ended', () => {
         isPlaying = false;
         isStarted = false;
-        playButton.textContent = '▶音声を再生';
+        playButton.textContent = '▶動画を再生';
         waveContainer.classList.add('hidden');
+        videoElm.classList.add("hidden")
     });
 }
-function stop_Music(){
-    audio.pause();
-    playButton.textContent = '▶音声を再生';
+function stop_Video(){
+    videoElm.pause();
+    playButton.textContent = '▶動画を再生';
     isPlaying = false;
     waveContainer.classList.add('hidden');
+    videoElm.classList.add("hidden")
 }
 playButton.addEventListener('click', () => {
     if (!isPlaying) {
         if (!isStarted) {
             isStarted = true;
-            run_Music(`https://raw.githubusercontent.com/Itsukaichi-3project/Music_player-base/main/musics/${musicPath}`);
+            run_Video(`https://raw.githubusercontent.com/Itsukaichi-3project/Video_viewer-base/main/videos/${videoPath}`);
         } else {
-            audio.play();
-            playButton.textContent = '■音声を停止';
+            videoElm.play();
+            playButton.textContent = '■動画を停止';
             isPlaying = true;
             waveContainer.classList.remove('hidden');
+            videoElm.classList.remove("hidden")
         }
     } else {
         stop_Music();
     }
 });
 window.addEventListener("DOMContentLoaded", () => {
-    if (musicPath) {
-        window.document.title = musicPath;
+    if (videoPath) {
+        window.document.title = videoPath;
     }
 });
-window.document.title = musicPath;
+window.document.title = videoPath;
+
+
+
 // すべてのwave-barを取得してループを回す
 const bars = document.querySelectorAll('.wave-bar');
 

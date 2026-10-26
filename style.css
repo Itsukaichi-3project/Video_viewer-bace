@@ -33,6 +33,10 @@
 #play-button:active {
     scale:0.95;
 }
+#play-video {
+  width:60%;
+  height:60%;
+}
 .wave-container {
   display: flex;
   gap:10px;
