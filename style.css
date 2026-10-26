@@ -21,8 +21,8 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  height: 128px;
-  width: calc(128px * 6);
+  height: 64px;
+  width: calc(64px * 12);
   transition:
   transform 0.3s ease,
   box-shadow 0.3s ease,

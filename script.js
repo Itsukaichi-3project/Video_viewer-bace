@@ -42,7 +42,7 @@ playButton.addEventListener('click', () => {
             videoElm.classList.remove("hidden")
         }
     } else {
-        stop_Music();
+        stop_Video();
     }
 });
 window.addEventListener("DOMContentLoaded", () => {
