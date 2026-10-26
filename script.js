@@ -53,7 +53,7 @@ window.addEventListener("DOMContentLoaded", () => {
 window.document.title = videoPath;
 
 
-
+/*
 // すべてのwave-barを取得してループを回す
 const bars = document.querySelectorAll('.wave-bar');
 
@@ -84,3 +84,4 @@ const delay = distanceFromCenter * 0.1;
 bar.style.setProperty('--peak-height', `${maxHeight}px`);
 bar.style.animationDelay = `${delay}s`;
 });
+*/
